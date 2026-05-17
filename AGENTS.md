@@ -246,8 +246,11 @@ Phase 7  Evaluation                🔲 待做
 - 如 sandbox 不可用，在回复末尾给出完整 git 命令供用户在终端运行
 
 ### Git / Deploy 大文件防护
+- 当前约定只保留两个分支概念：
+  - **local:** `main` — 本地研究/数据处理工作区，可包含本地 `audio/`、`features/`、`embeddings/` 文件，但不要直接 push 到 deploy remote。
+  - **remote:** `github_cloud/deploy` — GitHub/Vercel 轻量发布分支，不含 `audio/`、`features/`、`embeddings/` tracked files。
 - **绝对不要从含 `audio/` 历史的本地分支直接 push 到 GitHub。**
-  - 已知危险分支名：`codex/frontend-youtube-deploy`（本地历史中曾包含 8423 个 `audio/` WAV tracked files）。
+  - 历史事故：旧本地 `codex/frontend-youtube-deploy` 分支曾包含 8423 个 `audio/` WAV tracked files；该本地分支已删除，但本地 `main` 的历史 pack 仍很大。
   - 症状：`git push` 显示 `Writing objects` 几百 MB / 数 GB，或对象数上万，例如 `Writing objects: 3% ... 559 MiB`。
   - 原因：`.gitignore` 只能阻止新文件进入 git，不能移除已经在 branch history 里的大文件；即使当前 diff 只改前端文件，push 新分支也会上传该分支独有历史中的 audio blobs。
 - **部署/推送前必须检查：**
@@ -260,11 +263,10 @@ Phase 7  Evaluation                🔲 待做
   ```bash
   cd /Users/songhaifan/Documents/GitHub/music_topic
   git fetch github_cloud
-  git worktree add /tmp/music-topic-deploy-clean github_cloud/codex/frontend-youtube-cloud
+  git worktree add /tmp/music-topic-deploy-clean github_cloud/deploy
   cd /tmp/music-topic-deploy-clean
-  git switch -c codex/frontend-youtube-deploy-clean
   git cherry-pick <needed-small-commit>
-  git push -u github_cloud HEAD:codex/frontend-youtube-deploy
+  git push github_cloud HEAD:deploy
   ```
 - **不要用 `git checkout` 在当前含本地 audio 数据的工作树里切 deploy clean branch。**
   - 使用 `git worktree` 是为了避免本地 `audio/` 数据与干净分支互相干扰。

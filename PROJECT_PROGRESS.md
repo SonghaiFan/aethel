@@ -4397,6 +4397,35 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
 - 下一步：
   - 后续 deploy 修改建议在 clean repo/worktree 中进行，或重新 clone 远端干净分支作为发布工作区。
 
+### 2026-05-17 13:58
+
+- 本步目标：按用户要求将 Git 分支概念收敛为 `local: main` 与 `remote: deploy`。
+- 实际操作：
+  - 确认本地 `main` 是当前 `codex/frontend-youtube-deploy` 的祖先；
+  - `git switch main` 后 fast-forward 到 `528b783`；
+  - 删除本地混淆分支：
+    - `codex/frontend-youtube-deploy`
+    - `codex/frontend-youtube-cloud`
+  - 在 clean repo `/tmp/music-topic-clean-push.WsTnvy` 中将发布分支改名为 `deploy` 并推送：
+    - `git push -u github_cloud deploy`
+  - 删除远端旧分支：
+    - 成功删除 `codex/frontend-youtube-deploy`
+    - 先删除 `codex/frontend-youtube-cloud` 被拒，因为它是 GitHub default branch；
+    - 使用 `gh repo edit SonghaiFan/music-topic-explorer --default-branch deploy` 将默认分支改为 `deploy`；
+    - 再成功删除远端 `codex/frontend-youtube-cloud`；
+  - `git fetch github_cloud --prune` 后确认远端 tracking 只剩 `github_cloud/deploy`。
+- 结果产出：
+  - 本地分支只剩：`main`；
+  - 远端分支只剩：`deploy`；
+  - `github_cloud/HEAD -> github_cloud/deploy`；
+  - 更新 `AGENTS.md`，明确当前约定：
+    - local: `main`
+    - remote: `github_cloud/deploy`
+- 遇到的问题：
+  - 本地 `main` 仍有旧 audio 大对象历史，仍不应直接 push 到 deploy remote；发布要基于 `github_cloud/deploy` clean worktree。
+- 下一步：
+  - 后续所有发布更新都从 `github_cloud/deploy` clean worktree 开始，或在临时 clean repo 中同步必要文件后推送到 `deploy`。
+
 ### 2026-05-17 11:37
 
 - 本步目标：将 `explorer_app` 改成轻量部署友好的 YouTube 播放源，避免线上依赖本地 43G `audio/` 目录。
