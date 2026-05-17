@@ -4372,6 +4372,31 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
 - 下一步：
   - 若需要发布，使用 `git worktree add /tmp/music-topic-deploy-clean github_cloud/codex/frontend-youtube-cloud`，再 cherry-pick 需要的小提交。
 
+### 2026-05-17 13:53
+
+- 本步目标：清理失败 git push 留下的临时垃圾，并用干净历史重新推送 deploy 分支。
+- 实际操作：
+  - 确认没有残留 `git push` / `git-remote-https` 进程；
+  - 删除失败 push 留下的 `.git/objects/pack/tmp_idx_*` 与 `tmp_pack_*`，`git count-objects -vH` 显示 `garbage: 0`；
+  - 确认当前本地仓库仍有历史性 44GB pack（audio 大对象历史），不尝试在原仓库中重写历史，避免影响本地数据；
+  - 使用 `mktemp` 创建独立 clean repo `/tmp/music-topic-clean-push.WsTnvy`；
+  - `rsync` 当前项目文件到 clean repo，同时排除 `.git/`、`audio/`、`features/`、`embeddings/`、`logs/`、`models/`、`explorer_app/node_modules/` 等大/生成目录；
+  - 在 clean repo 中重新 `git init`、commit，并验证：
+    - tracked `audio/` count = 0；
+    - tracked `features/` count = 0；
+    - tracked `embeddings/` count = 0；
+    - clean repo 总大小约 44MB，Git object size 约 14MB；
+  - 从 clean repo 成功 push：
+    - `git push -u github_cloud codex/frontend-youtube-deploy`
+- 结果产出：
+  - 远端新增干净分支 `codex/frontend-youtube-deploy`；
+  - GitHub PR 链接：`https://github.com/SonghaiFan/music-topic-explorer/pull/new/codex/frontend-youtube-deploy`；
+  - 本地失败 push 垃圾已清理，但原仓库历史 pack 仍大，后续不要从原本地 `codex/frontend-youtube-deploy` 直接 push。
+- 遇到的问题：
+  - 当前原仓库仍不是轻量 Git 历史；要彻底回收 44GB pack，需要另行做 fresh clone / history rewrite，这一步未做，避免误伤本地音频数据。
+- 下一步：
+  - 后续 deploy 修改建议在 clean repo/worktree 中进行，或重新 clone 远端干净分支作为发布工作区。
+
 ### 2026-05-17 11:37
 
 - 本步目标：将 `explorer_app` 改成轻量部署友好的 YouTube 播放源，避免线上依赖本地 43G `audio/` 目录。
