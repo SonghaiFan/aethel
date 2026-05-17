@@ -44,6 +44,35 @@ const projectionLabel = (projection: ThumbnailProjectionConfig) => (
   projection.camera ? `${projection.capturedView.toUpperCase()} Snapshot` : projection.plane.toUpperCase()
 );
 
+const axisLabel = (axis: string) => {
+  if (axis === 'tsneX') return 't-SNE X';
+  if (axis === 'tsneY') return 't-SNE Y';
+  if (axis === 'selectedFeatureNorm') return 'Feature';
+  return axis.startsWith('feature:') ? axis.replace(/^feature:/, '') : axis;
+};
+
+const axisValue = (piece: SpatialPiece, axis: string) => {
+  if (axis === 'tsneX') return piece.tsneX;
+  if (axis === 'tsneY') return piece.tsneY;
+  if (axis === 'selectedFeatureNorm') return piece.selectedFeatureNorm;
+  if (axis.startsWith('feature:')) {
+    return piece.selectedFeatureValues[axis.replace(/^feature:/, '')] ?? 0;
+  }
+  const value = piece[axis as keyof SpatialPiece];
+  return typeof value === 'number' ? value : 0;
+};
+
+const projectionAxes = (projection: ThumbnailProjectionConfig): [string, string, string] => {
+  const zAxis = projection.zAxis || 'selectedFeatureNorm';
+  return ['tsneX', 'tsneY', zAxis];
+};
+
+const meanValue = (values: number[]) => {
+  const finiteValues = values.filter(Number.isFinite);
+  if (!finiteValues.length) return 0;
+  return finiteValues.reduce((sum, value) => sum + value, 0) / finiteValues.length;
+};
+
 const GalleryView = ({ pieces, thumbnailProjection, thumbnailProjectionModel: capturedThumbnailProjectionModel, onClose, onSelect }: GalleryViewProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
@@ -101,6 +130,15 @@ const GalleryView = ({ pieces, thumbnailProjection, thumbnailProjectionModel: ca
     [capturedThumbnailProjectionModel, pieces, thumbnailProjection]
   );
 
+  const projectionValueColumns = useMemo(() => {
+    const axes = projectionAxes(thumbnailProjection);
+    return axes.map((axis, index) => ({
+      id: `projection${index}`,
+      label: axisLabel(axis),
+      value: (record: GalleryRecord) => meanValue(record.segments.map(piece => axisValue(piece, axis))),
+    }));
+  }, [thumbnailProjection]);
+
   const columns = useMemo<ColumnDef<GalleryRecord>[]>(() => [
     {
       id: 'thumbnails',
@@ -155,6 +193,16 @@ const GalleryView = ({ pieces, thumbnailProjection, thumbnailProjectionModel: ca
         </span>
       ),
     },
+    ...projectionValueColumns.map(column => ({
+      id: column.id,
+      header: column.label,
+      accessorFn: column.value,
+      cell: info => (
+        <span className="font-mono text-[11px] text-white/62">
+          {Number(info.getValue()).toFixed(2)}
+        </span>
+      ),
+    } satisfies ColumnDef<GalleryRecord>)),
     {
       accessorKey: 'period',
       header: 'Period',
@@ -176,7 +224,7 @@ const GalleryView = ({ pieces, thumbnailProjection, thumbnailProjectionModel: ca
       header: 'Length',
       cell: info => <span className="font-mono text-white/55">{Number(info.getValue()).toFixed(2)}m</span>,
     },
-  ], [onClose, onSelect, thumbnailProjection, thumbnailProjectionModel]);
+  ], [onClose, onSelect, projectionValueColumns, thumbnailProjection, thumbnailProjectionModel]);
 
   const table = useReactTable({
     data: filteredRecords,
@@ -258,7 +306,7 @@ const GalleryView = ({ pieces, thumbnailProjection, thumbnailProjectionModel: ca
       </div>
 
       <div className="relative z-10 min-h-0 flex-1 overflow-auto px-6 py-4">
-        <table className="w-full min-w-[1120px] border-separate border-spacing-0 text-left">
+        <table className="w-full min-w-[1320px] border-separate border-spacing-0 text-left">
           <thead className="sticky top-0 z-10 bg-[#050505]/96 backdrop-blur-xl">
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>

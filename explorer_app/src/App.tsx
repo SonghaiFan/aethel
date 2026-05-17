@@ -461,9 +461,9 @@ export default function App() {
   }, [liveThumbnailProjection, pieces]);
 
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading || focusMode) return;
     setCameraCommand({ view: currentCameraView, id: Date.now() });
-  }, [currentCameraView, isLoading, orthographicMode]);
+  }, [currentCameraView, focusMode, isLoading, orthographicMode]);
 
   const handleCameraSync = useCallback((sourceId: string, state: CameraSyncState) => {
     setCameraSyncCommand({ sourceId, state, id: Date.now() });
@@ -675,7 +675,6 @@ export default function App() {
           onPlaybackUpdate={setPlaybackState}
           focusMode={focusMode}
           setFocusMode={setFocusMode}
-          orthographicMode={orthographicMode}
           setOrthographicMode={setOrthographicMode}
           currentCameraView={currentCameraView}
           clusterMethod={clusterMethod}

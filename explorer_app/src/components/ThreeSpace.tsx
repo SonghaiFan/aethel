@@ -25,15 +25,13 @@ const AXIS_Z_COLOR = '#666666';
 const GRID_COLOR = '#1c1c1c';
 const TUBE_RADIAL_SEGMENTS = 5;
 const SELECTED_TUBE_RADIAL_SEGMENTS = 8;
-const TUBE_SEGMENTS_PER_POINT = 10;
-const SELECTED_TUBE_SEGMENTS_PER_POINT = 18;
+const TUBE_SEGMENTS_PER_POINT = 18;
+const SELECTED_TUBE_SEGMENTS_PER_POINT = 36;
 const TRAJECTORY_RADIUS = 0.018;
 const ACTIVE_TRAJECTORY_RADIUS = 0.056;
-const FOLLOW_CLOSE_DISTANCE = 2.6;
-const FOLLOW_FAR_DISTANCE = 18;
-const FOLLOW_SPEED_FOR_FAR_DISTANCE = 8;
+const FOLLOW_DISTANCE = 8.5;
 const FOLLOW_TARGET_SMOOTHING = 3.2;
-const FOLLOW_DISTANCE_SMOOTHING = 2.4;
+const FOLLOW_DISTANCE_SMOOTHING = 1.35;
 const FOLLOW_MANUAL_DISTANCE_THRESHOLD = 0.22;
 const ACTIVE_ENDPOINT_RADIUS = ACTIVE_TRAJECTORY_RADIUS * 0.62;
 const ACTIVE_ENDPOINT_HALO_RADIUS = ACTIVE_TRAJECTORY_RADIUS * 2.4;
@@ -244,12 +242,31 @@ const dedupeTrajectoryPoints = (points: [number, number, number][]) => (
     .filter((point, index, allPoints) => index === 0 || point.distanceToSquared(allPoints[index - 1]) > 0.0001)
 );
 
+const dedupeTrajectorySamples = (
+  points: [number, number, number][],
+  colors?: string[]
+) => {
+  const vectors: THREE.Vector3[] = [];
+  const dedupedColors: string[] = [];
+
+  points.forEach((point, index) => {
+    const vector = new THREE.Vector3(...point);
+    if (vectors.length > 0 && vector.distanceToSquared(vectors[vectors.length - 1]) <= 0.0001) return;
+    vectors.push(vector);
+    const sampleColor = colors?.[index];
+    if (sampleColor) dedupedColors.push(sampleColor);
+  });
+
+  return { vectors, colors: dedupedColors };
+};
+
 const buildTrajectoryCurve = (
   points: [number, number, number][],
   closed: boolean,
-  progress: number
+  progress: number,
+  colors?: string[]
 ) => {
-  const vectors = dedupeTrajectoryPoints(points);
+  const { vectors, colors: dedupedColors } = dedupeTrajectorySamples(points, colors);
   if (vectors.length < 2) return null;
 
   const isClosed = closed && vectors.length > 2;
@@ -258,7 +275,7 @@ const buildTrajectoryCurve = (
   const baseCurve = new THREE.CatmullRomCurve3(vectors, isClosed, 'centripetal');
   const curve = clampedProgress >= 0.999999 ? baseCurve : new PartialCurve(baseCurve, clampedProgress);
 
-  return { curve, segmentCount };
+  return { curve, segmentCount, colors: dedupedColors };
 };
 
 const trajectoryPointAtProgress = (
@@ -309,10 +326,11 @@ const TrajectoryTube = React.memo(({
   const clampedProgress = Math.max(0, Math.min(1, progress));
   const geometry = useMemo(() => {
     if (points.length < 2 || clampedProgress <= 0.001) return null;
-    const result = buildTrajectoryCurve(points, closed, clampedProgress);
+    const result = buildTrajectoryCurve(points, closed, clampedProgress, pointColors);
     if (!result) return null;
 
-    const { curve, segmentCount } = result;
+    const { curve, segmentCount, colors: curveColors } = result;
+    const resolvedColors = curveColors.length ? curveColors : [color];
     const tubularSegments = Math.max(10, Math.ceil(segmentCount * segmentsPerPoint * clampedProgress));
     const geometry = new THREE.TubeGeometry(
       curve,
@@ -326,8 +344,9 @@ const TrajectoryTube = React.memo(({
 
     for (let ringIndex = 0; ringIndex <= tubularSegments; ringIndex += 1) {
       const localTubeProgress = tubularSegments > 0 ? ringIndex / tubularSegments : 0;
-      const pathProgress = localTubeProgress * clampedProgress;
-      const vertexColor = interpolatePathColor(pointColors ?? [color], pathProgress, closed, color);
+      const localCurveT = curve.getUtoTmapping(localTubeProgress, 0);
+      const sourceCurveT = localCurveT * clampedProgress;
+      const vertexColor = interpolatePathColor(resolvedColors, sourceCurveT, closed, color);
 
       for (let radialIndex = 0; radialIndex <= radialSegments; radialIndex += 1) {
         const vertexIndex = (ringIndex * (radialSegments + 1)) + radialIndex;
@@ -817,7 +836,6 @@ const FollowCamera = ({
   const movement = useMemo(() => new THREE.Vector3(), []);
   const viewOffsetVector = useMemo(() => new THREE.Vector3(), []);
   const desiredPosition = useMemo(() => new THREE.Vector3(), []);
-  const previousFocus = useRef<THREE.Vector3 | null>(null);
   const lastAppliedDistance = useRef<number | null>(null);
   const manualDistance = useRef<number | null>(null);
 
@@ -830,12 +848,6 @@ const FollowCamera = ({
     }
 
     desiredTarget.set(...(focusPoint ?? fallbackTarget));
-    const focusSpeed = previousFocus.current && delta > 0
-      ? previousFocus.current.distanceTo(desiredTarget) / delta
-      : 0;
-    previousFocus.current = desiredTarget.clone();
-    const speedFactor = THREE.MathUtils.smoothstep(focusSpeed, 0, FOLLOW_SPEED_FOR_FAR_DISTANCE);
-    const defaultFollowDistance = THREE.MathUtils.lerp(FOLLOW_CLOSE_DISTANCE, FOLLOW_FAR_DISTANCE, speedFactor);
 
     const currentDistance = camera.position.distanceTo(controls.target);
     if (
@@ -844,7 +856,7 @@ const FollowCamera = ({
     ) {
       manualDistance.current = currentDistance;
     }
-    const followDistance = manualDistance.current ?? defaultFollowDistance;
+    const followDistance = manualDistance.current ?? FOLLOW_DISTANCE;
 
     previousTarget.copy(controls.target);
     controls.target.lerp(desiredTarget, 1 - Math.exp(-delta * FOLLOW_TARGET_SMOOTHING));
@@ -1219,7 +1231,6 @@ const ThreeSpace = ({ pieces, domainPieces, selectedPiece, onSelect, onDeselect,
       }}
     >
       <Canvas
-        key={orthographicMode ? 'orthographic' : 'perspective'}
         orthographic={orthographicMode}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
@@ -1419,7 +1430,7 @@ const ThreeSpace = ({ pieces, domainPieces, selectedPiece, onSelect, onDeselect,
         <CameraCommandHandler
           controlsRef={controlsRef}
           points={scenePoints}
-          command={cameraCommand}
+          command={focusMode ? null : cameraCommand}
           orthographicMode={orthographicMode}
         />
       

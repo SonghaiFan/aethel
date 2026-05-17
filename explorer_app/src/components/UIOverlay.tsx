@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CameraView, ComposerCompareSummary, PlaybackState, SimilarMatchWeights, SimilarRecordMatch, SpatialPiece, SpaceConfig, ThumbnailProjectionConfig } from '../types';
-import { X, Search, Play, Pause, GitCompare, Table2, Layers3, Music2, Box, Headphones, Eye, MousePointer2, ArrowUpDown } from 'lucide-react';
+import { X, Search, Play, Pause, GitCompare, Table2, Layers3, Music2, Box, Headphones, MousePointer2, ArrowUpDown } from 'lucide-react';
 import RecordWaveBar, { recordTimelineEnd } from './RecordWaveBar';
 import TsneTrajectoryThumbnail from './TsneTrajectoryThumbnail';
 import { CLUSTER_METHOD_OPTIONS, ClusterMethod, getClusterRepresentativeId, getClusterSize, getClusterValue, getClusterValueColor } from '../utils/clusterMethods';
@@ -308,7 +308,6 @@ interface UIOverlayProps {
   onPlaybackUpdate: (state: PlaybackState | null) => void;
   focusMode: boolean;
   setFocusMode: (enabled: boolean) => void;
-  orthographicMode: boolean;
   setOrthographicMode: (enabled: boolean) => void;
   currentCameraView: CameraView;
   clusterMethod: ClusterMethod;
@@ -353,7 +352,6 @@ const UIOverlay = ({
   onPlaybackUpdate,
   focusMode,
   setFocusMode,
-  orthographicMode,
   setOrthographicMode,
   currentCameraView,
   clusterMethod,
@@ -714,7 +712,12 @@ const UIOverlay = ({
     : `${wigglierComposer} has the more winding path shape.`;
   const toggleFollowMode = () => {
     const next = !focusMode;
-    if (next) setOrthographicMode(false);
+    if (next) {
+      onCameraView('iso');
+      setOrthographicMode(false);
+    } else {
+      setOrthographicMode(true);
+    }
     setFocusMode(next);
   };
 
@@ -789,7 +792,7 @@ const UIOverlay = ({
                   transition={{ duration: 0.22 }}
                   className="space-y-2"
                 >
-                  <div className="relative h-[214px] overflow-hidden rounded-lg border border-white/10 bg-white/[0.045] p-4">
+                  <div className="relative min-h-[196px] overflow-hidden rounded-lg border border-white/10 bg-white/[0.045] p-4">
                     {useYouTubePlayback && (
                       <div
                         aria-hidden="true"
@@ -800,34 +803,34 @@ const UIOverlay = ({
                     )}
                     <div className="absolute inset-0 bg-gradient-to-r from-black via-black/82 to-black/28" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/18" />
-                    <div className="relative z-10 grid h-full grid-cols-[154px_minmax(0,1fr)] items-start gap-4">
-                      <div className="shrink-0">
-                      <TsneTrajectoryThumbnail
-                        recordPieces={selectedRecordPieces}
-                        domainPieces={pieces}
-                        activePieceId={selectedPiece.id}
-                        clusterMethod={clusterMethod}
-                        projection={thumbnailProjection}
-                        width={154}
-                        height={154}
-                        showLabels
-                        onSelect={piece => onSelectRecordById(piece.id)}
-                      />
+                    <div className="relative z-10 grid min-h-[164px] grid-cols-[150px_minmax(0,1fr)] items-center gap-4">
+                      <div className="flex h-[150px] w-[150px] shrink-0 items-center justify-center">
+                        <TsneTrajectoryThumbnail
+                          recordPieces={selectedRecordPieces}
+                          domainPieces={pieces}
+                          activePieceId={selectedPiece.id}
+                          clusterMethod={clusterMethod}
+                          projection={thumbnailProjection}
+                          width={150}
+                          height={150}
+                          showLabels
+                          onSelect={piece => onSelectRecordById(piece.id)}
+                        />
                       </div>
-                      <div className="min-w-0 space-y-1.5">
-                      <p className="text-[11px] uppercase tracking-[0.14em] text-white/46">
-                        {selectedPiece.period} · {selectedPiece.composer}
-                      </p>
-                      <p className="text-2xl font-light serif italic leading-tight line-clamp-3 text-white/95">
-                        {selectedPiece.musicName}
-                      </p>
-                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-mono text-white/52">
-                        <span>{selectedPiece.length.toFixed(2)}m</span>
-                        <span>{selectedPiece.variationNum} {friendlyMode ? 'variations' : 'vars'}</span>
-                        <span>{friendlyMode ? 'section ' : ''}{activeSegment?.label ?? selectedPiece.segmentLabel}</span>
-                        {!friendlyMode && <span>{clusterMethod}: {activeCluster ?? 'noise'}</span>}
-                        {!friendlyMode && activeClusterSize != null && <span>n={activeClusterSize}</span>}
-                      </div>
+                      <div className="min-w-0 space-y-2 self-center">
+                        <p className="truncate text-[10px] uppercase tracking-[0.14em] text-white/46">
+                          {selectedPiece.period} · {selectedPiece.composer}
+                        </p>
+                        <p className="line-clamp-3 font-serif text-[23px] font-light italic leading-[1.05] text-white/95">
+                          {selectedPiece.musicName}
+                        </p>
+                        <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-mono text-white/52">
+                          <span>{selectedPiece.length.toFixed(2)}m</span>
+                          <span>{selectedPiece.variationNum} {friendlyMode ? 'variations' : 'vars'}</span>
+                          <span>{friendlyMode ? 'section ' : ''}{activeSegment?.label ?? selectedPiece.segmentLabel}</span>
+                          {!friendlyMode && <span>{clusterMethod}: {activeCluster ?? 'noise'}</span>}
+                          {!friendlyMode && activeClusterSize != null && <span>n={activeClusterSize}</span>}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1239,25 +1242,12 @@ const UIOverlay = ({
                   {cameraLabel(view, friendlyMode)}
                 </button>
               ))}
-              <button
-                type="button"
-                title="Toggle orthographic projection"
-                onClick={() => setOrthographicMode(!orthographicMode)}
-                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-light uppercase tracking-[0.14em] transition-colors ${
-                  orthographicMode
-                    ? 'bg-white/18 text-white'
-                    : 'text-white/45 hover:bg-white/8 hover:text-white/82'
-                }`}
-              >
-                <Eye size={13} />
-                {friendlyMode ? (orthographicMode ? 'Flat' : 'Depth') : (orthographicMode ? 'Ortho' : 'Persp')}
-              </button>
             </div>
           )}
 
           <button
             type="button"
-            title={focusMode ? 'Stop following playback' : 'Follow playback in depth view'}
+            title={focusMode ? 'Stop following playback' : 'Follow playback in depth 3D'}
             onClick={toggleFollowMode}
             className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-light uppercase tracking-[0.14em] transition-colors ${
               focusMode
