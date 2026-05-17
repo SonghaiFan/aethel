@@ -1,0 +1,5 @@
+method,clusters,outliers,pca2_visual_silhouette
+KMeans,3,0,0.3392798755283953
+K-Medoids,3,0,0.24425406277543976
+Ward,3,0,0.15860940935664947
+HDBSCAN,4,814,-0.32040165794274095
