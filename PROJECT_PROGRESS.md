@@ -4426,6 +4426,27 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
 - 下一步：
   - 后续所有发布更新都从 `github_cloud/deploy` clean worktree 开始，或在临时 clean repo 中同步必要文件后推送到 `deploy`。
 
+### 2026-05-17 14:05
+
+- 本步目标：排查并修复 Vercel 默认 `deploy` 分支构建失败。
+- 实际操作：
+  - 检查 clean deploy repo 结构，确认 repo root 没有 `package.json`，真正的 Vite app 位于 `explorer_app/`；
+  - 在 repo root 运行 `npm run build` 复现失败：`ENOENT package.json`；
+  - 在 `explorer_app/` 中运行 `npm ci && npm run build`，构建成功；
+  - 新增根目录 `vercel.json`：
+    - `installCommand`: `cd explorer_app && npm ci`
+    - `buildCommand`: `cd explorer_app && npm run build`
+    - `outputDirectory`: `explorer_app/dist`
+  - 本地按上述命令验证成功，并将 `vercel.json` 同步到 clean deploy repo 推送远端 `deploy`。
+- 结果产出：
+  - 本地 `main` commit：`d686e32 fix: configure vercel build from explorer app`；
+  - 远端 `deploy` commit：`1b838f8 fix: configure vercel build from explorer app`；
+  - Vercel 后续从默认 `deploy` 分支构建时会进入 `explorer_app`。
+- 遇到的问题：
+  - build 仍有既有 Vite 大 chunk warning，尤其 `waveform_thumbnails` 与 main JS 偏大；这不是本次失败原因，但后续仍应轻量化。
+- 下一步：
+  - 检查 Vercel dashboard 中最新 `deploy` 分支构建是否通过；如仍失败，重点查看是否 Vercel 项目 dashboard root directory 覆盖了 repo-level `vercel.json`。
+
 ### 2026-05-17 11:37
 
 - 本步目标：将 `explorer_app` 改成轻量部署友好的 YouTube 播放源，避免线上依赖本地 43G `audio/` 目录。
