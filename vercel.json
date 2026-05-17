@@ -1,0 +1,5 @@
+{
+  "installCommand": "cd explorer_app && npm ci",
+  "buildCommand": "cd explorer_app && npm run build",
+  "outputDirectory": "explorer_app/dist"
+}
