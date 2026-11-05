@@ -4760,3 +4760,12 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
 - 结果产出：品牌名突出主题与变奏关系探索，替换原有泛化的 `Music Topic Explorer`。
 - 遇到的问题：无。
 - 下一步：完成 GitHub 仓库重命名并检查本地远程地址。
+
+
+### 2026-11-05 — Variation Voyage
+
+- 本步目标：采用用户确认的最终名称 Variation Voyage。
+- 实际操作：统一项目标题、包名及当前文档中的名称与路径；本地目录移动至 `/Users/songhaifan/Developer/frank/variation-voyage`，GitHub 仓库更名为 `SonghaiFan/variation-voyage`。
+- 结果产出：项目名 Variation Voyage，目录与仓库名 variation-voyage。
+- 遇到的问题：无。
+- 下一步：按现有 deploy 分支流程继续维护项目。

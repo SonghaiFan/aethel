@@ -1,4 +1,4 @@
-# Variation Atlas
+# Variation Voyage
 
 Interactive atlas for exploring musical themes and variations in this repository.
 
