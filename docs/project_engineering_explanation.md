@@ -1,4 +1,4 @@
-# Music Thumbnail Visualization for Theme & Variations
+# Variation Atlas — Music Theme & Variations
 
 本文档解释本项目的代码与工程设计。重点不是逐行复述代码，而是说明每一步为什么存在、它接收什么输入、产出什么结果，以及它如何推动下一步研究。
 

@@ -1,6 +1,6 @@
-# Music Topic Explorer
+# Variation Atlas
 
-Interactive 3D explorer for the Theme & Variations dataset in this repository.
+Interactive atlas for exploring musical themes and variations in this repository.
 
 The app currently visualizes record-level metadata from `src/data/TV_annotation_clean.csv`.
 It does not require API keys or any backend service.

@@ -7,7 +7,7 @@
 
 ## 1. 项目背景与目标
 
-**项目名称：** Music Thumbnail Visualization for Theme & Variations
+**项目名称：** Variation Atlas（Music Theme & Variations）
 
 **核心目标：**
 构建一个基于 audio embedding 与 interpretable handcrafted feature 的音乐可视化系统，用"视觉缩略图（music thumbnails）"表达 Theme & Variations 的音乐结构与相似性。

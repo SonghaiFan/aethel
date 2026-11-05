@@ -4749,3 +4749,14 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
   - 保留原有 deploy 分支、工作区文件和 Git 历史。
 - 遇到的问题：无。
 - 下一步：按原有 deploy 分支流程继续维护线上前端。
+
+
+### 2026-11-05 20:35
+
+- 本步目标：为音乐主题与变奏可视化项目采用更能表达研究内容的名称。
+- 实际操作：
+  - 项目名定为 `Variation Atlas`，仓库和本地目录 slug 定为 `variation-atlas`；
+  - 更新前端标题、包名、README、项目说明和 agent 项目背景。
+- 结果产出：品牌名突出主题与变奏关系探索，替换原有泛化的 `Music Topic Explorer`。
+- 遇到的问题：无。
+- 下一步：完成 GitHub 仓库重命名并检查本地远程地址。
