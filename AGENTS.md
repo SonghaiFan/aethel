@@ -145,7 +145,7 @@ music_topic/
 
 **备用方式（单独重新生成）：**
 ```bash
-cd ~/Documents/GitHub/music_topic
+cd /Users/songhaifan/Developer/frank/music-topic-explorer
 python backend/export/export_explorer_data.py             # 完整数据
 python backend/export/export_explorer_data.py --suffix _test  # test 子集
 ```
@@ -261,7 +261,7 @@ Phase 7  Evaluation                🔲 待做
   ```
 - **正确发布方式：从远端干净分支创建 worktree，再 cherry-pick 小提交。**
   ```bash
-  cd /Users/songhaifan/Documents/GitHub/music_topic
+  cd /Users/songhaifan/Developer/frank/music-topic-explorer
   git fetch github_cloud
   git worktree add /tmp/music-topic-deploy-clean github_cloud/deploy
   cd /tmp/music-topic-deploy-clean

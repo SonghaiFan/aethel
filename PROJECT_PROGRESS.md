@@ -4736,3 +4736,16 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
   - 无。
 - 下一步：
   - 提交并刷新 frontend-only cloud branch。
+
+### 2026-11-05 20:20
+
+- 本步目标：将项目按研究项目归档到 `frank`，并采用与 GitHub 仓库和前端包一致的简洁名称。
+- 实际操作：
+  - 将本地目录从 `frankie/music_topic_explorer_dev` 重命名并移动到 `frank/music-topic-explorer`；
+  - 更新本文件中供后续操作使用的项目根目录路径；
+  - GitHub 仓库已命名为 `SonghaiFan/music-topic-explorer`，远程地址保持一致。
+- 结果产出：
+  - 本地、前端包及 GitHub 仓库统一使用 `music-topic-explorer`；
+  - 保留原有 deploy 分支、工作区文件和 Git 历史。
+- 遇到的问题：无。
+- 下一步：按原有 deploy 分支流程继续维护线上前端。
