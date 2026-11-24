@@ -4843,3 +4843,11 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
 - 实际操作：通过前端 TypeScript 检查与 Vite 生产构建；配置 `aethel.songhai.site` 为生产子域名，保留 `aethel-explorer.vercel.app`。
 - 大文件检查：audio/features/embeddings 无 tracked files；本地 pack 约 13.56 MiB。
 - 下一步：推送 deploy 分支并核对生产部署提交和 HTTPS。
+
+
+### 2026-11-24 — Frank 系列 README
+
+- 本步目标：仓库首页有统一的 Frank 系列 README。
+- 实际操作：新增根目录 `README.md`（浅色/深色自适应组合标志、简介、链接行、线上截图、流程与目录说明、本地运行、系列页脚与 Frank 签名）；素材放在 `.github/brand/`，由 `build_readme_assets.py` 生成。
+- 结果产出：GitHub 仓库首页可直接看到项目介绍；与其他五个 Frank 项目 README 结构一致。
+- 下一步：合并 PR 到 deploy。
