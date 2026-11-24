@@ -1,0 +1,12 @@
+{
+  "name": "Aethel",
+  "short_name": "Aethel",
+  "icons": [
+    { "src": "/brand/aethel-icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/brand/aethel-icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/brand/aethel-icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "theme_color": "#141414",
+  "background_color": "#141414",
+  "display": "standalone"
+}

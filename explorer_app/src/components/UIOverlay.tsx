@@ -728,7 +728,11 @@ const UIOverlay = ({
         <div className="space-y-5">
           <header className="space-y-3">
             <div className="space-y-1.5">
-              <h1 className="text-5xl leading-none font-light tracking-tight serif">Aethel</h1>
+              <h1 className="flex items-end gap-3 text-5xl leading-none font-light tracking-tight serif">
+                {/* The Didone Æ: A and E share one stroke, as variations share a theme. */}
+                <img src="/brand/aethel-mark-light.svg" alt="" aria-hidden="true" className="h-[34px] w-auto translate-y-[-4px]" />
+                <span>Aethel</span>
+              </h1>
               <p className="text-[11px] uppercase tracking-[0.28em] text-white/42 italic">
                 {friendlyMode ? 'Listen, look, and compare variations' : 'Archives of Classical Variation'}
               </p>

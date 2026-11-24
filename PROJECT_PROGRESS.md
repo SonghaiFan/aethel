@@ -4769,3 +4769,15 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
 - 结果产出：项目名 Variation Voyage，目录与仓库名 variation-voyage。
 - 遇到的问题：无。
 - 下一步：按现有 deploy 分支流程继续维护项目。
+
+
+### 2026-11-24 — Aethel 标志接入 explorer
+
+- 本步目标：为 explorer 加上正式的品牌标志与网页图标，品牌名采用 app 顶栏已在使用的 Aethel。
+- 实际操作：
+  - 设计 Didone 风格的 Æ 标记（æthel 为古英语“高贵”；A 与 E 共用横笔，呼应变奏共用主题），完整套件见 `output/brand-kit/`（未纳入 git）；
+  - 顶栏标题前加入纸色 Æ 标记（`explorer_app/public/brand/aethel-mark-light.svg`），与 Playfair 标题同高并落在同一基线；
+  - 新增 favicon（SVG + ICO）、Apple 图标、manifest 及 192/512/maskable 图标（`explorer_app/public/`），页面标题改为 `Aethel`。
+- 结果产出：explorer 顶栏、浏览器标签和安装图标统一使用 Æ 标记；`tsc --noEmit` 通过，本地 dev 预览确认图标全部加载、控制台无错误。
+- 遇到的问题：无。项目文档中的项目名仍为 Variation Voyage，品牌名 Aethel 仅用于界面与标志。
+- 下一步：如需上线，按 deploy 流程从干净分支 cherry-pick 本提交。
