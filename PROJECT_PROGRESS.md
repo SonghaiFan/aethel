@@ -4823,3 +4823,15 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
   - `aethel.vercel.app` 已被他人项目占用，无法作为本项目默认域名。
 - 遇到的问题：本机 `vercel` CLI 无法连接 Vercel API（fetch failed），改为在网页控制台操作。
 - 下一步：推送侧栏签名提交后线上才会显示 Frank 签名。
+
+
+### 2026-11-24 — 线上域名改为 aethel-explorer.vercel.app
+
+- 本步目标：线上地址与项目名一致。
+- 实际操作：
+  - 在 Vercel 项目 `aethel` 中新增域名 `aethel-explorer.vercel.app`（Production）；
+  - 旧域名 `music-topic-explorer.vercel.app` 改为 308 永久重定向到新域名（保留路径）；
+  - GitHub 仓库主页链接改为新域名。
+- 结果产出：https://aethel-explorer.vercel.app 返回 Aethel 页面；旧地址 308 跳转到新地址，旧链接仍然可用。
+- 遇到的问题：`aethel.vercel.app` 已被他人占用，故使用 `aethel-explorer`。
+- 下一步：无。
