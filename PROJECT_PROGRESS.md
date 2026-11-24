@@ -4835,3 +4835,11 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
 - 结果产出：https://aethel-explorer.vercel.app 返回 Aethel 页面；旧地址 308 跳转到新地址，旧链接仍然可用。
 - 遇到的问题：`aethel.vercel.app` 已被他人占用，故使用 `aethel-explorer`。
 - 下一步：无。
+
+
+### 2026-11-24 — Deployment and domain maintenance
+
+- 本步目标：保留并发布本地已提交修改，统一生产入口。
+- 实际操作：通过前端 TypeScript 检查与 Vite 生产构建；配置 `aethel.songhai.site` 为生产子域名，保留 `aethel-explorer.vercel.app`。
+- 大文件检查：audio/features/embeddings 无 tracked files；本地 pack 约 13.56 MiB。
+- 下一步：推送 deploy 分支并核对生产部署提交和 HTTPS。

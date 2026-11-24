@@ -42,3 +42,6 @@ explorer_app/build/
 explorer_app/coverage/
 explorer_app/.env*
 !explorer_app/.env.example
+
+# Local inspection and screenshot artifacts
+/output/
