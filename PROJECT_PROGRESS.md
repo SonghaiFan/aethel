@@ -4791,5 +4791,14 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
   - `docs/project_engineering_explanation.md`、`explorer_app/README.md` 标题改为 Aethel；
   - `explorer_app/package.json` 与 `package-lock.json` 包名改为 `aethel`。
 - 结果产出：文档、界面、标志与包名均为 Aethel；上一条记录中“文档仍为 Variation Voyage”的说明不再适用。历史记录保持原样。
-- 遇到的问题：GitHub 仓库与 remote 仍为 `SonghaiFan/variation-voyage`，未改动；如需更名需在 GitHub 上操作后更新 remote。
-- 下一步：按需在 GitHub 上重命名仓库。
+- 遇到的问题：无。
+- 下一步：在 GitHub 上重命名仓库（见下一条）。
+
+
+### 2026-11-24 — GitHub 仓库更名为 aethel
+
+- 本步目标：GitHub 仓库名与项目名一致。
+- 实际操作：`gh repo rename aethel`，将 `SonghaiFan/variation-voyage` 更名为 `SonghaiFan/aethel`；本地 `origin` 改为 `https://github.com/SonghaiFan/aethel.git`。
+- 结果产出：仓库地址 https://github.com/SonghaiFan/aethel；旧地址由 GitHub 自动重定向。默认分支仍为 `deploy`。
+- 遇到的问题：无。
+- 下一步：检查 Vercel 项目是否仍关联到该仓库（GitHub 更名后通常自动跟随）。
