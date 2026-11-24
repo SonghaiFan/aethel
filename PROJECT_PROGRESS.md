@@ -4851,3 +4851,11 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
 - 实际操作：新增根目录 `README.md`（浅色/深色自适应组合标志、简介、链接行、线上截图、流程与目录说明、本地运行、系列页脚与 Frank 签名）；素材放在 `.github/brand/`，由 `build_readme_assets.py` 生成。
 - 结果产出：GitHub 仓库首页可直接看到项目介绍；与其他五个 Frank 项目 README 结构一致。
 - 下一步：合并 PR 到 deploy。
+
+
+### 2026-11-24 — 中文 README
+
+- 本步目标：仓库首页提供中文版本。
+- 实际操作：新增 `README.zh-CN.md`（与英文版结构一致）；英文 README 链接行加入“中文”，中文版加入“English”。
+- 结果产出：中英文 README 可以互相切换。
+- 下一步：合并 PR 到 deploy。
