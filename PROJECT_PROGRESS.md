@@ -4802,3 +4802,12 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
 - 结果产出：仓库地址 https://github.com/SonghaiFan/aethel；旧地址由 GitHub 自动重定向。默认分支仍为 `deploy`。
 - 遇到的问题：无。
 - 下一步：检查 Vercel 项目是否仍关联到该仓库（GitHub 更名后通常自动跟随）。
+
+
+### 2026-11-24 — 侧栏底部加入 Frank 签名
+
+- 本步目标：与其他 frank 项目一致，在界面底部加入 Frank 签名作为落款（不放在标志旁）。
+- 实际操作：左侧面板改为纵向 flex，底部右侧加入签名（`explorer_app/public/brand/frank-signature.svg`，以遮罩方式绘制为 40% 白）。
+- 结果产出：内容较短时签名停在面板底部，内容较长时随面板滚动到末尾；`tsc --noEmit` 通过，本地预览确认显示位置。
+- 遇到的问题：无。
+- 下一步：无。

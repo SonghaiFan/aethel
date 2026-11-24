@@ -724,8 +724,8 @@ const UIOverlay = ({
   return (
     <div className="absolute inset-0 pointer-events-none z-10 font-sans text-white select-none">
       {/* Side Panel */}
-      <aside className="pointer-events-auto absolute bottom-0 left-0 top-0 w-[400px] overflow-y-auto border-r border-white/10 bg-black/86 px-6 py-6 shadow-2xl backdrop-blur-2xl">
-        <div className="space-y-5">
+      <aside className="pointer-events-auto absolute bottom-0 left-0 top-0 flex w-[400px] flex-col overflow-y-auto border-r border-white/10 bg-black/86 px-6 py-6 shadow-2xl backdrop-blur-2xl">
+        <div className="shrink-0 space-y-5">
           <header className="space-y-3">
             <div className="space-y-1.5">
               <h1 className="flex items-end gap-3 text-5xl leading-none font-light tracking-tight serif">
@@ -1226,6 +1226,10 @@ const UIOverlay = ({
             </section>
             )}
           </div>
+        </div>
+        {/* Frank's signature signs off at the foot of the panel. */}
+        <div className="mt-auto flex shrink-0 justify-end pt-10">
+          <span role="img" aria-label="Frank" className="block h-5 w-12 bg-white/40" style={{ mask: 'url(/brand/frank-signature.svg) center / contain no-repeat', WebkitMask: 'url(/brand/frank-signature.svg) center / contain no-repeat' }} />
         </div>
       </aside>
         
