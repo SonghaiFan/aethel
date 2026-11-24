@@ -1,4 +1,4 @@
-# Variation Voyage
+# Aethel
 
 Interactive atlas for exploring musical themes and variations in this repository.
 

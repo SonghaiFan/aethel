@@ -7,7 +7,7 @@
 
 ## 1. 项目背景与目标
 
-**项目名称：** Variation Voyage（Music Theme & Variations）
+**项目名称：** Aethel（Music Theme & Variations）
 
 **核心目标：**
 构建一个基于 audio embedding 与 interpretable handcrafted feature 的音乐可视化系统，用"视觉缩略图（music thumbnails）"表达 Theme & Variations 的音乐结构与相似性。
@@ -145,7 +145,7 @@ music_topic/
 
 **备用方式（单独重新生成）：**
 ```bash
-cd /Users/songhaifan/Developer/frank/variation-voyage
+cd /Users/songhaifan/Developer/frank/aethel
 python backend/export/export_explorer_data.py             # 完整数据
 python backend/export/export_explorer_data.py --suffix _test  # test 子集
 ```
@@ -261,7 +261,7 @@ Phase 7  Evaluation                🔲 待做
   ```
 - **正确发布方式：从远端干净分支创建 worktree，再 cherry-pick 小提交。**
   ```bash
-  cd /Users/songhaifan/Developer/frank/variation-voyage
+  cd /Users/songhaifan/Developer/frank/aethel
   git fetch github_cloud
   git worktree add /tmp/music-topic-deploy-clean github_cloud/deploy
   cd /tmp/music-topic-deploy-clean

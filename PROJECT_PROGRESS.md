@@ -4781,3 +4781,15 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
 - 结果产出：explorer 顶栏、浏览器标签和安装图标统一使用 Æ 标记；`tsc --noEmit` 通过，本地 dev 预览确认图标全部加载、控制台无错误。
 - 遇到的问题：无。项目文档中的项目名仍为 Variation Voyage，品牌名 Aethel 仅用于界面与标志。
 - 下一步：如需上线，按 deploy 流程从干净分支 cherry-pick 本提交。
+
+
+### 2026-11-24 — 项目名改为 Aethel
+
+- 本步目标：项目文档与界面统一使用 Aethel，取代 Variation Voyage。
+- 实际操作：
+  - `AGENTS.md` 项目名称改为 Aethel，文中本地路径更新为实际目录 `/Users/songhaifan/Developer/frank/aethel`；
+  - `docs/project_engineering_explanation.md`、`explorer_app/README.md` 标题改为 Aethel；
+  - `explorer_app/package.json` 与 `package-lock.json` 包名改为 `aethel`。
+- 结果产出：文档、界面、标志与包名均为 Aethel；上一条记录中“文档仍为 Variation Voyage”的说明不再适用。历史记录保持原样。
+- 遇到的问题：GitHub 仓库与 remote 仍为 `SonghaiFan/variation-voyage`，未改动；如需更名需在 GitHub 上操作后更新 remote。
+- 下一步：按需在 GitHub 上重命名仓库。
