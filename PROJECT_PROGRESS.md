@@ -4811,3 +4811,15 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
 - 结果产出：内容较短时签名停在面板底部，内容较长时随面板滚动到末尾；`tsc --noEmit` 通过，本地预览确认显示位置。
 - 遇到的问题：无。
 - 下一步：无。
+
+
+### 2026-11-24 — Vercel 项目更名为 aethel
+
+- 本步目标：Vercel 项目名与项目名一致，并确认部署正常。
+- 实际操作：在 Vercel 项目设置中将 `music-topic-explorer` 更名为 `aethel`；检查部署列表与线上站点。
+- 结果产出：
+  - `89fc042`（Æ 标志与改名）已作为 Production 部署成功（Ready）；仓库更名后 Vercel 仍关联 `SonghaiFan/aethel`；
+  - 线上地址仍为 https://music-topic-explorer.vercel.app（页面标题 Aethel，新图标正常）；
+  - `aethel.vercel.app` 已被他人项目占用，无法作为本项目默认域名。
+- 遇到的问题：本机 `vercel` CLI 无法连接 Vercel API（fetch failed），改为在网页控制台操作。
+- 下一步：推送侧栏签名提交后线上才会显示 Frank 签名。
