@@ -13,7 +13,8 @@
   <a href="https://aethel.songhai.site">Live explorer</a> ·
   <a href="#run-the-explorer">Run the explorer</a> ·
   <a href="docs/project_engineering_explanation.md">Engineering notes (中文)</a> ·
-  <a href="PROJECT_PROGRESS.md">Progress log</a>
+  <a href="PROJECT_PROGRESS.md">Progress log</a> ·
+  <a href="README.zh-CN.md">中文</a>
 </p>
 
 ![The Aethel explorer: thousands of theme and variation segments in a 3D space, coloured by period.](.github/brand/screenshot.jpg)
