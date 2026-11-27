@@ -4859,3 +4859,8 @@ git commit -m "feat: tv_core library, segment cuts, explorer player, gitignore, 
 - 实际操作：新增 `README.zh-CN.md`（与英文版结构一致）；英文 README 链接行加入“中文”，中文版加入“English”。
 - 结果产出：中英文 README 可以互相切换。
 - 下一步：合并 PR 到 deploy。
+
+### 2026-11-27 — Shared series footer
+
+- Updated both root README footers to the shared Frank banner and added the reusable footer sync workflow.
+- Preserved project content and signatures; checked footer replacement, links and repeatability.
